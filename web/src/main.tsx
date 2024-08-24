@@ -5,6 +5,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import App from "./App.tsx";
 import {Auth} from "./routes/Auth.tsx";
 
+
 const router = createBrowserRouter([
     {
         path: "/",

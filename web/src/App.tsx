@@ -9,8 +9,12 @@ export const App = () => {
     })
     const [accessToken, setAccessToken] = useState<string | undefined | null>();
     useEffect(() => {
-        const storedToken = localStorage.getItem("accessToken");
-        setAccessToken(storedToken);
+        const storedToken = localStorage.getItem("access_token");
+        if (!storedToken || storedToken === 'undefined') {
+            setAccessToken(null);
+        } else {
+            setAccessToken(storedToken);
+        }
     }, []);
     if (accessToken === undefined) {
         return <h1>Loading...</h1>

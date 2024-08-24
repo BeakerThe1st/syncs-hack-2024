@@ -10,11 +10,15 @@ export const Auth = () => {
     }
     useEffect(() => {
         const params = new URLSearchParams({code});
-        fetch(`http://localhost:6969/${params.toString()}`).then((res) => res.json()).then((json) => {
-            localStorage.setItem("accessToken", json.accessToken)
+        fetch(`http://localhost:6969/token?${params.toString()}`, {method: "GET"}).then((res) => res.json()).then((json) => {
+            console.dir(json);
+            if (!json.access_token) {
+                throw new Error("access token not provided");
+            }
+            localStorage.setItem("access_token", json.access_token)
+            alert(`Access token is now: ${localStorage.getItem("access_token")}`)
             navigate({pathname: "/"});
         })
-    }, []);
+    }, [code]);
     return <h1>Loading auth...</h1>
 }
-
