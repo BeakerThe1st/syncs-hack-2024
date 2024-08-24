@@ -1,3 +1,12 @@
+Users
+Chats
+Messages
+
+Users - Chats
+Users - Messages
+
+
+
 ```json
 {
     "users": [
@@ -7,8 +16,18 @@
 
     "chat": [
         {
-            "userA": 1,
-            "userB": 2,
+            "id": 9813248,
+            "messages": [],
+            "userA": "UserA",
+            "userB": "UserB"
+        }
+    ],
+
+    "messages": [
+        {
+            "id": 696969,
+            "content": "This is a sample message",
+            "user": "User"
         }
     ]
 }
