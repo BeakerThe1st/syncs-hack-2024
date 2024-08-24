@@ -1,10 +1,11 @@
 import {FormEvent, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export const App = () => {
     const authParams = new URLSearchParams({
         response_type: 'code',
         client_id: "ae4bc472d1c44cacb538ccd67dbaa7a0",
-        scope: "playlist-read-collaborative",
+        scope: "streaming user-read-email user-read-private",
         redirect_uri: `http://localhost:1337/auth`,
     })
     const [accessToken, setAccessToken] = useState<string | undefined | null>();
@@ -12,6 +13,8 @@ export const App = () => {
     const [songId, setSongId] = useState("");
 
     const [awaitingMatch, setAwaitingMatch] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleSongIdChange = (e: FormEvent<HTMLInputElement>) => {
         setSongId(e.currentTarget.value);
@@ -30,7 +33,8 @@ export const App = () => {
                 requestMatch();
             } else if (res.status === 200) {
                 res.json().then((json) => {
-                    alert(`Play ${json.song_id}`);
+                    console.log(`Go to match ${json.match_id}`);
+                    navigate(`/player:${json.match_id}`,)
                 })
             }
         });
