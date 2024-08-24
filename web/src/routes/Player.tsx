@@ -11,6 +11,8 @@ export const Player = () => {
         fetch(`http://localhost:6969/match/${match}`).then((res) => res.json()).then((json) => setMatchData(json));
     }, []);
 
+    console.log(matchData);
+
     if (matchData === undefined) {
         return <h1>Loading match data...</h1>
     }

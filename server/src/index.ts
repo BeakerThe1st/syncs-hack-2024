@@ -50,10 +50,9 @@ const newUserId = ()  => {
   return currentUserId;
 }
 
-var currentMatchId: number = -1;
-const newMatchId = (user_id: string)  => {
-  if (user_id === 'B') currentMatchId += 1;
-  return `${currentMatchId}${user_id}`;
+var currentMatchId: number = 0;
+const newMatchId = ()  => {
+  return `${currentMatchId + 1}`;
 }
 
 async function sleep(ms: number): Promise<void> {
@@ -64,35 +63,69 @@ async function sleep(ms: number): Promise<void> {
 var userCount = 0
 var userSongPair: string[] = [];
 
+const userQueue = [];
+
+interface Match {
+    song_id_a?: string;
+    song_id_b?: string;
+}
+
+const matches = new Map<string, Match>();
+
+
 // 205 no one ready
 // 200 ready for someone
 // return your id, their id, match_id
-app.post("/match", (req, res) => {
+app.post("/match", async (req, res) => {
     console.dir(req.body);
-  if (userCount === 1) {
-    // THIS IS USER A.
-    userSongPair[0] = req.body.song_id;
-    res.status(200).send({match_id: newMatchId('A')});
-  }
-  else if (userCount === 0) {  
-    // THIS IS USER B.
-    userCount += 1;
-    sleep(5000);
-    if (userCount === 1) {
-      userSongPair[1] = req.body.song_id;
-      res.status(200).send({match_id: newMatchId('B')});
-      userCount = 0;
+    console.log(`received match request with song id: ${req.body.song_id}`);
+    for (const [id, match] of matches) {
+        if (!match.song_id_b) {
+            match.song_id_b = req.body.song_id;
+            console.log(`found open match ${id}`);
+            return res.status(200).send({match_id: `${id}A`});
+        }
     }
-    res.status(205).send();
-  }
+
+    //Did not find an open match, creating one
+    const match_id = newMatchId();
+
+    console.log(`creating open match ${match_id}`);
+    matches.set(match_id, {song_id_a: req.body.song_id});
+
+    console.log('eepy');
+    let tries = 0;
+    while (tries < 10) {
+        await sleep(1000);
+        if (matches.get(match_id)?.song_id_b) {
+            //There is a match
+            console.log(`match ${match_id} complete`);
+            return res.status(200).json({ match_id: `${match_id}B`});
+        }
+        tries++;
+    }
+    //Did not get a match in time
+    matches.delete(match_id);
+    console.log(`deleting open match ${match_id}`);
+    return res.status(205);
 })
 
 app.get("/match/:id", (req, res) => {
-    userSongPair[0] = "0JP9xo3adEtGSdUEISiszL";
-    userSongPair[1] = "0JP9xo3adEtGSdUEISiszL";
-  if ((req.params.id as string).slice(-1) === 'A') res.status(200).send({song_id: userSongPair[1]});
-  else if ((req.params.id as string).slice(-1) === 'B') res.status(200).send({song_id: userSongPair[0]});
-  else throw new Error("Match IDs are fucked up.");
+    const pairDesignator = req.params.id.slice(-1);
+    const actualId = req.params.id.substring(0, req.params.id.length - 1);
+    console.log(`actual id: ${actualId}`);
+    console.log(`pair designator: ${pairDesignator}`);
+    const match = matches.get(actualId);
+    if (!match) {
+        throw new Error("Invalid match");
+    }
+    let song_id;
+    if (pairDesignator === "A") {
+        song_id = match.song_id_b;
+    } else {
+        song_id = match.song_id_a;
+    }
+    res.status(200).send({song_id});
 });
 
 console.log("hello world");

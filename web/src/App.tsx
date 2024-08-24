@@ -26,14 +26,17 @@ export const App = () => {
     }
 
     const requestMatch = () => {
-        fetch("http://localhost:6969/match", {method: "POST", body: JSON.stringify({song_id: songId})}).then((res) => {
+        console.log(`songId is ${songId}`);
+        fetch("http://localhost:6969/match", {method: "POST", body: JSON.stringify({song_id: songId}), headers: {
+            'content-type': 'application/json',
+            }}).then((res) => {
             if (res.status === 205) {
                 console.log("got 205, sending again");
                 requestMatch();
             } else if (res.status === 200) {
                 res.json().then((json) => {
                     console.log(`Go to match ${json.match_id}`);
-                    navigate(`/player/${json.match_id}`,)
+                    navigate(`/player/${json.match_id}`,);
                 })
             }
         });
