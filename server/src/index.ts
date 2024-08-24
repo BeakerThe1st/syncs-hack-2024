@@ -2,8 +2,6 @@ var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = 'http://localhost:6969/callback';
 
-import queryString from 'query-string';
-
 import Express from 'express';
 const app = Express();
 
@@ -15,24 +13,21 @@ app.listen(6969, () => {
     console.log(`Listening on 6969`);
 })
 
-app.get("/auth-url", (req, res) => {
-  const scope = 'user-read-private user-read-email';
-  const authParams = new URLSearchParams({
-        response_type: 'code',
-        client_id,
-        scope,
-        redirect_uri: `http://localhost:/`,
-    })
+function getServerToken(): string {
+  const token = await fetch('', {
+    method: 'POST',
+    headers: "Content-Type: application/x-www-form-urlencoded",
+    body: `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
+  });
+  return token; 
+}
 
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    new URLSearchParams({req.query})
-})
-
-app.post("/get-code", (req, res) => {
+app.get("/token/", (req, res) => {
+  const code = req.params.code;
   const accessToken = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
-        code: req.body.code,
+        code,
         redirect_uri: redirect_uri,
         grant_type: 'authorization_code'
       },
