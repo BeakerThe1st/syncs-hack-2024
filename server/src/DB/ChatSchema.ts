@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 interface IChat {
     ChatID: number;
-    UserIDa: number;
-    UserIDb: number;
+    SongIDa: number;
+    SongIDb: number;
 }
 
 const ChatSchema = new Schema<IChat>({
     ChatID: {type: Number, Required: true},
-    UserIDa: {type: Number, Required: true},
-    userIDb: {type: Number, required: true},
+    SongIDa: {type: Number, Required: true},
+    SongIDb: {type: Number, required: true},
 })
 
 const Chat = mongoose.model<IChat>("Chat", ChatSchema)

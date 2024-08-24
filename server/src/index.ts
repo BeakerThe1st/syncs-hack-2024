@@ -1,9 +1,15 @@
 import './env';
+import mongoose from 'mongoose';
 
 import Express, {json} from 'express';
 import cors from 'cors';
 
 const app = Express();
+
+import Chat from './DB/ChatSchema';
+
+const connectionString: string = process.env.MONGO_CONNECTION_STRING || "";
+mongoose.connect(connectionString);
 
 app.use(cors());
 app.use(json());
@@ -41,7 +47,7 @@ app.get("/token/", async (req, res) => {
 
   console.dir(json);
 
-  res.status(200).send({access_token: json.access_token, user_id: newUserId()});
+  res.status(200).send({access_token: json.access_token,  user_id: newUserId() });
 })
 
 var currentUserId: number = -1;
@@ -100,6 +106,12 @@ app.post("/match", async (req, res) => {
         if (matches.get(match_id)?.song_id_b) {
             //There is a match
             console.log(`match ${match_id} complete`);
+            await Chat.create({
+                ChatId: match_id,
+                SongIDa: matches.get(match_id)?.song_id_a,
+                SongIDb: req.body.song_id
+            });
+            matches.delete(match_id); // remove temp structure for finding matches, reference DB for more.
             return res.status(200).json({ match_id: `${match_id}B`});
         }
         tries++;
@@ -110,20 +122,20 @@ app.post("/match", async (req, res) => {
     return res.status(205);
 })
 
-app.get("/match/:id", (req, res) => {
+app.get("/match/:id", async (req, res) => {
     const pairDesignator = req.params.id.slice(-1);
     const actualId = req.params.id.substring(0, req.params.id.length - 1);
     console.log(`actual id: ${actualId}`);
     console.log(`pair designator: ${pairDesignator}`);
-    const match = matches.get(actualId);
-    if (!match) {
+    const match = await Chat.find({ChatID: actualId}).lean;
+    if (match === null) {
         throw new Error("Invalid match");
     }
     let song_id;
     if (pairDesignator === "A") {
-        song_id = match.song_id_b;
+        song_id = match.SongIDb;
     } else {
-        song_id = match.song_id_a;
+        song_id = match.SongIDa;
     }
     res.status(200).send({song_id});
 });

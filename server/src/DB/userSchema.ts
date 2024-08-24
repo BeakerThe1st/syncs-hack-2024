@@ -7,7 +7,7 @@ interface IUser {
 
 const UserSchema = new Schema<IUser>({
     UserID: { type: Number, required: true },
-    SongID: { type: String, required: true },
+    SongID: { type: String },
 })
 
 const User = mongoose.model<IUser>("User", UserSchema)
