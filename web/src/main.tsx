@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     {
         path: "/auth",
         element: <Auth />
-    }
+    },
 ])
 
 createRoot(document.getElementById('root')!).render(
