@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-interface Iuser {
+interface IUser {
     UserID: number;
     SongID: number;
 }
 
-const userSchema = new Schema<Iuser>({
+const UserSchema = new Schema<IUser>({
     UserID: { type: number, required: true },
     SongID: { type: number, required: true },
 })
