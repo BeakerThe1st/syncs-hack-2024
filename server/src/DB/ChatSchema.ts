@@ -7,7 +7,11 @@ interface IChat {
 }
 
 const ChatSchema = new Schema<IChat>({
-    ChatID: {type: number, Required: true},
-    UserIDa: {type: number, Required: true},
-    userIDb: {type: number, required: true},
+    ChatID: {type: Number, Required: true},
+    UserIDa: {type: Number, Required: true},
+    userIDb: {type: Number, required: true},
 })
+
+const Chat = mongoose.model<IChat>("Chat", ChatSchema)
+
+export default Chat;
