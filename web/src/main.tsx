@@ -4,6 +4,7 @@ import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import App from "./App.tsx";
 import {Auth} from "./routes/Auth.tsx";
+import { Player } from './routes/Player.tsx';
 
 
 const router = createBrowserRouter([
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
         path: "/auth",
         element: <Auth />
     },
+    {
+        path: "/player/:match",
+        element: <Player />
+    }
 ])
 
 createRoot(document.getElementById('root')!).render(
