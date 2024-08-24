@@ -21,7 +21,6 @@ export const App = () => {
     }
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(`Received song id ${songId}`);
         requestMatch();
         setAwaitingMatch(true);
     }
@@ -34,7 +33,7 @@ export const App = () => {
             } else if (res.status === 200) {
                 res.json().then((json) => {
                     console.log(`Go to match ${json.match_id}`);
-                    navigate(`/player:${json.match_id}`,)
+                    navigate(`/player/${json.match_id}`,)
                 })
             }
         });
