@@ -1,8 +1,8 @@
 Users
-Chats
+matchs
 Messages
 
-Users - Chats
+Users - matchs
 Users - Messages
 
 
@@ -12,9 +12,16 @@ Users - Messages
     "users": [
         {"id": 1, "songId": "2W4bzvPG5P3nBTj4H0jNid"}
         {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
+        {"id": 2, "songId": "3TfccGs1tmOLtcmTKRokhv"}
     ],
 
-    "chat": [
+    "match": [
         {
             "id": 9813248,
             "messages": [],
@@ -26,6 +33,7 @@ Users - Messages
     "messages": [
         {
             "id": 696969,
+            "match": "match",
             "content": "This is a sample message",
             "user": "User"
         }
@@ -42,8 +50,8 @@ PATCH api/users/userId
 GET api/users/userId
 - Get a particular user by userId
 
-POST api/chat
-- Add a new "chat" between two users
+POST api/match
+- Add a new "match" between two users
 
 
 
