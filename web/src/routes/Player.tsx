@@ -1,8 +1,11 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 
+interface MatchData {
+    song_id: string;
+}
 export const Player = () => {
-    const [matchData, setMatchData] = useState<any>();
+    const [matchData, setMatchData] = useState<MatchData>();
     const {match} = useParams();
     useEffect(() => {
         fetch(`http://localhost:6969/match/${match}`).then((res) => res.json()).then((json) => setMatchData(json));
@@ -11,6 +14,9 @@ export const Player = () => {
     if (matchData === undefined) {
         return <h1>Loading match data...</h1>
     }
+
+    console.log("match data");
+    console.dir(matchData);
     return <ActualPlayer matchData={matchData} />
 }
 
