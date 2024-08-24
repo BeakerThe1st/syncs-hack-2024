@@ -26,7 +26,8 @@ Users - Messages
     "messages": [
         {
             "id": 696969,
-            "content": "This is a sample message"
+            "content": "This is a sample message",
+            "user": "User"
         }
     ]
 }
