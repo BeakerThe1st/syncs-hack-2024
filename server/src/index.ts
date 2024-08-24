@@ -61,6 +61,7 @@ async function sleep(ms: number): Promise<void> {
 }
 
 var userCount = 0
+var userSongPair: number[] = [];
 
 // 205 no one ready
 // 200 ready for someone
@@ -68,6 +69,7 @@ var userCount = 0
 app.post("/match", (req, res) => {
   if (userCount === 1) {
     // THIS IS USER A.
+    userSongPair[0] = req.body.song_id;
     res.status(200).send({match_id: newMatchId('A')});
   }
   else if (userCount === 0) {  
@@ -75,14 +77,18 @@ app.post("/match", (req, res) => {
     userCount += 1;
     sleep(5000);
     if (userCount === 1) {
+      userSongPair[1] = req.body.song_id;
       res.status(200).send({match_id: newMatchId('B')});
+      userCount = 0;
     }
     res.status(205).send();
   }
 })
 
 app.get("/match", (req, res) => {
-
+  if ((req.body.match_id as string).slice(-1) === 'A') res.status(200).send(userSongPair[1]);
+  else if ((req.body.match_id as string).slice(-1) === 'B') res.status(200).send(userSongPair[0]);
+  else throw "Match IDs are fucked up.";
 })
 
 console.log("hello world");
