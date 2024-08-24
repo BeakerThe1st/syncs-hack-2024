@@ -1,11 +1,12 @@
 import './env';
 
-import Express from 'express';
+import Express, {json} from 'express';
 import cors from 'cors';
 
 const app = Express();
 
 app.use(cors());
+app.use(json());
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
@@ -61,12 +62,13 @@ async function sleep(ms: number): Promise<void> {
 }
 
 var userCount = 0
-var userSongPair: number[] = [];
+var userSongPair: string[] = [];
 
 // 205 no one ready
 // 200 ready for someone
 // return your id, their id, match_id
 app.post("/match", (req, res) => {
+    console.dir(req.body);
   if (userCount === 1) {
     // THIS IS USER A.
     userSongPair[0] = req.body.song_id;
@@ -85,10 +87,12 @@ app.post("/match", (req, res) => {
   }
 })
 
-app.get("/match", (req, res) => {
-  if ((req.body.match_id as string).slice(-1) === 'A') res.status(200).send(userSongPair[1]);
-  else if ((req.body.match_id as string).slice(-1) === 'B') res.status(200).send(userSongPair[0]);
-  else throw "Match IDs are fucked up.";
+app.get("/match/:id", (req, res) => {
+    userSongPair[0] = "0JP9xo3adEtGSdUEISiszL";
+    userSongPair[1] = "0JP9xo3adEtGSdUEISiszL";
+  if ((req.params.id as string).slice(-1) === 'A') res.status(200).send({song_id: userSongPair[1]});
+  else if ((req.params.id as string).slice(-1) === 'B') res.status(200).send({song_id: userSongPair[0]});
+  else throw new Error("Match IDs are fucked up.");
 })
 
 console.log("hello world");
