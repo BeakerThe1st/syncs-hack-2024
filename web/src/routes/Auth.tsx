@@ -15,8 +15,8 @@ export const Auth = () => {
             if (!json.access_token) {
                 throw new Error("access token not provided");
             }
-            localStorage.setItem("access_token", json.access_token)
-            alert(`Access token is now: ${localStorage.getItem("access_token")}`)
+            localStorage.setItem("access_token", json.access_token);
+            localStorage.setItem("user_id", json.user_id);
             navigate({pathname: "/"});
         })
     }, [code]);
