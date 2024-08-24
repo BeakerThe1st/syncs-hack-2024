@@ -18,14 +18,6 @@ app.listen(6969, () => {
     console.log(`Listening on 6969`);
 })
 
-/*const getServerToken = async (): string => {
-    return await fetch('', {
-        method: 'POST',
-        headers: "Content-Type: application/x-www-form-urlencoded",
-        body: `grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}`
-    });
-}*/
-
 app.get("/token/", async (req, res) => {
 
 
@@ -48,7 +40,51 @@ app.get("/token/", async (req, res) => {
 
   console.dir(json);
 
-  res.status(200).send({access_token: json.access_token});
+  res.status(200).send({access_token: json.access_token, user_id: newUserId()});
+})
+
+var currentUserId: number = -1;
+const newUserId = ()  => {
+  currentUserId += 1;
+  return currentUserId;
+}
+
+var currentMatchId: number = -1;
+const newMatchId = (user_id: string)  => {
+  if (user_id === 'B') currentMatchId += 1;
+  return `${currentMatchId}${user_id}`;
+}
+
+//var waitingUsers: WaitingUser = [];
+
+//class WaitingUser {
+
+//}
+
+async function sleep(ms: number): Promise<void> {
+  return new Promise(
+    (resolve) => setTimeout(resolve, ms));
+}
+
+var userCount = 0
+
+// 205 no one ready
+// 200 ready for someone
+// return your id, their id, match_id
+app.post("/match", (req, res) => {
+  if (userCount === 1) {
+    // THIS IS USER A.
+    res.status(200).send({match_id: newMatchId('A')});
+  }
+  else if (userCount === 0) {  
+    // THIS IS USER B.
+    userCount += 1;
+    sleep(5000);
+    if (userCount === 1) {
+      res.status(200).send({match_id}: newMatchId('B'));
+    }
+    res.status(205).send();
+  }
 })
 
 console.log("hello world");
