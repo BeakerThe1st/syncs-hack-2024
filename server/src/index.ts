@@ -93,6 +93,6 @@ app.get("/match/:id", (req, res) => {
   if ((req.params.id as string).slice(-1) === 'A') res.status(200).send({song_id: userSongPair[1]});
   else if ((req.params.id as string).slice(-1) === 'B') res.status(200).send({song_id: userSongPair[0]});
   else throw new Error("Match IDs are fucked up.");
-})
+});
 
 console.log("hello world");
