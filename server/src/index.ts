@@ -55,12 +55,6 @@ const newMatchId = (user_id: string)  => {
   return `${currentMatchId}${user_id}`;
 }
 
-//var waitingUsers: WaitingUser = [];
-
-//class WaitingUser {
-
-//}
-
 async function sleep(ms: number): Promise<void> {
   return new Promise(
     (resolve) => setTimeout(resolve, ms));
@@ -81,10 +75,14 @@ app.post("/match", (req, res) => {
     userCount += 1;
     sleep(5000);
     if (userCount === 1) {
-      res.status(200).send({match_id}: newMatchId('B'));
+      res.status(200).send({match_id: newMatchId('B')});
     }
     res.status(205).send();
   }
+})
+
+app.get("/match", (req, res) => {
+
 })
 
 console.log("hello world");
