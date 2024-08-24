@@ -5,7 +5,7 @@ export const App = () => {
     const authParams = new URLSearchParams({
         response_type: 'code',
         client_id: "ae4bc472d1c44cacb538ccd67dbaa7a0",
-        scope: "streaming user-read-email user-read-private",
+        scope: "streaming user-read-email user-read-private user-modify-playback-state",
         redirect_uri: `http://localhost:1337/auth`,
     })
     const [accessToken, setAccessToken] = useState<string | undefined | null>();
