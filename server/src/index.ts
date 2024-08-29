@@ -145,4 +145,13 @@ app.get("/match/:id", async (req, res) => {
     res.status(200).send({song_id});
 });
 
+app.post("/dev/createTestChat", async (req, res) => {
+    await Chat.create({
+        ChatID: 5,
+        SongIDa: "hello",
+        SongIDb: "we\'re almost giving up"
+    });
+    res.status(200).send();
+})
+
 console.log("hello world");

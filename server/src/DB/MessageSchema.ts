@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { Schema, model} from 'mongoose';
 
 interface IMessage {
     MessageID: number;
@@ -10,9 +10,9 @@ interface IMessage {
 const MessageSchema = new Schema<IMessage>({
     MessageID: {type: Number, required: true},
     MessageContent: {type: String, required: true},
-    ChatID: {type: Number, required: true}
+    ChatID: {type: Number, required: true},
     UserID: {type: Number, required: true}
 })
 
-const Message = mongoose.model<IMessage>("Message", MessageSchema)
+const Message = model<IMessage>("Message", MessageSchema)
 export default Message;

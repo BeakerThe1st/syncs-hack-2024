@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 interface IChat {
     ChatID: number;
@@ -12,6 +12,6 @@ const ChatSchema = new Schema<IChat>({
     SongIDb: {type: Number, required: true},
 })
 
-const Chat = mongoose.model<IChat>("Chat", ChatSchema)
+const Chat: any = model<IChat>("Chat", ChatSchema);
 
 export default Chat;

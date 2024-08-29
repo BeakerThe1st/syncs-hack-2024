@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import { Schema, model} from 'mongoose';
 
 interface IUser {
     UserID: number;
@@ -10,6 +10,6 @@ const UserSchema = new Schema<IUser>({
     SongID: { type: String },
 })
 
-const User = mongoose.model<IUser>("User", UserSchema)
+const User = model<IUser>("User", UserSchema)
 export default User;
 
